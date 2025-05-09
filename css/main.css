@@ -1,0 +1,297 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+:root {
+	--index: calc(1vw + 1vh);
+	--gutter: 30px;
+	--side-small: 26;
+	--side-big: 36;
+	--depth: 4000px;
+	--transition: .75s cubic-bezier(.075, .5, 0, 1)
+}
+
+/* Скрываем Scrollbar */
+body {
+	scrollbar-width: none; /* Firefox */
+}
+body::-webkit-scrollbar { 
+	display: none; /* Safari and Chrome */
+}
+
+@font-face {
+	font-family: raleway_c;
+	src: url(../fonts/raleway-v22-cyrillic-300.woff2);
+	font-weight: 300;
+}
+@font-face {
+	font-family: raleway_c;
+	src: url(../fonts/raleway-v22-cyrillic-100.woff2);
+	font-weight: 100;
+}
+body {
+	background-color: #000;
+	color: #fff;
+	font-size: calc(var(--index) * .8);
+	font-family: raleway_c, sans-serif;
+	line-height: 1.75;
+	height: var(--depth);
+	font-weight: 300;
+}
+/*************************************************************************/
+
+.balloons {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.balloon {
+  position: absolute;
+  width: 30px;
+  height: 40px;
+  border-radius: 50% 50% 45% 45%;
+  background-color: red;
+  bottom: -60px;
+  animation: floatBalloon 6s ease-in-out infinite;
+  opacity: 0;
+}
+
+.balloon.red { left: 10%; background-color: red; animation-delay: 0s; }
+.balloon.blue { left: 25%; background-color: blue; animation-delay: 1s; }
+.balloon.yellow { left: 40%; background-color: yellow; animation-delay: 2s; }
+.balloon.green { left: 60%; background-color: green; animation-delay: 3s; }
+.balloon.purple { left: 75%; background-color: purple; animation-delay: 4s; }
+
+@keyframes floatBalloon {
+  0% { transform: translateY(0); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-120vh); opacity: 0; }
+}
+
+
+/* Интро контейнер */
+.intro {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  overflow: hidden;
+  transition: opacity 1s ease, transform 1s ease;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.intro.hide {
+  opacity: 0;
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+
+/* Заголовок интро */
+.main-title {
+  font-size: 4rem;
+  color: #fff;
+  text-shadow:
+    0 0 10px #ff6,
+    0 0 20px #f0f,
+    0 0 30px #0ff,
+    0 0 40px #ff6;
+  animation: floatText 2s ease-in-out infinite, fadeIn 1.5s ease-in-out;
+  font-weight: bold;
+}
+
+@keyframes floatText {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Шары */
+/* .balloons {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+  width: 100%;
+  pointer-events: none;
+}
+
+.balloon {
+  width: 40px;
+  height: 60px;
+  border-radius: 50% 50% 45% 45%;
+  background-color: red;
+  position: relative;
+  animation: floatBalloon 6s ease-in-out infinite;
+} */
+
+.balloon::after {
+  content: '';
+  position: absolute;
+  width: 2px;
+  height: 20px;
+  background: #fff;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* .balloon.red { background-color: #ff4d4d; animation-delay: 0s; }
+.balloon.blue { background-color: #4da6ff; animation-delay: 0.5s; }
+.balloon.yellow { background-color: #ffff66; animation-delay: 1s; }
+.balloon.green { background-color: #66ff66; animation-delay: 1.5s; } */
+
+/* @keyframes floatBalloon {
+  0% { transform: translateY(0); opacity: 0.8; }
+  50% { transform: translateY(-150px); opacity: 1; }
+  100% { transform: translateY(0); opacity: 0.8; }
+} */
+
+/* Салют */
+.fireworks {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image:
+    radial-gradient(circle, #ff0 2px, transparent 2px),
+    radial-gradient(circle, #f0f 2px, transparent 2px),
+    radial-gradient(circle, #0ff 2px, transparent 2px);
+  background-size: 200px 200px;
+  background-position: center;
+  animation: fireworks 1s infinite;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+@keyframes fireworks {
+  0% { background-size: 100px 100px; opacity: 1; }
+  50% { background-size: 200px 200px; opacity: 0.8; }
+  100% { background-size: 100px 100px; opacity: 1; }
+}
+
+.intro .balloons,
+.intro .fireworks {
+  transition: opacity 1s ease;
+}
+
+.intro.hide .balloons,
+.intro.hide .fireworks {
+  opacity: 0;
+}
+
+
+/**************************************************************************/
+.container {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	perspective: 1500px;
+}
+.gallery {
+	transform-style: preserve-3d;
+	height: 100%;
+}
+.frame {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: var(--transition), opacity .75s ease;
+	will-change: transform;
+	transform-style: preserve-3d;
+}
+h1, h2, h3, h4 {
+	font-weight: 100;
+	text-transform: uppercase;
+	width: min-content;
+	line-height: 1;
+}
+.frame:nth-child(1) {
+	transform: translateZ(0);
+	z-index: 10;
+}
+
+.main-title {
+  font-weight: 700;
+  font-size: calc(var(--index) * 10); /* если хочешь выделить ещё сильнее */
+  color: #ffffff; /* например, светло-золотой */
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+.frame h2 {
+	text-align: center;
+	font-size: calc(var(--index) * 3.3);
+
+}
+
+ 
+.frame-media {
+	position: relative;
+	width: calc(var(--index) * var(--side-small));
+	height: calc(var(--index) * var(--side-big));
+	background-position: center;
+	background-size: cover;
+}
+.frame-media_left {
+	right: calc(var(--side-small) / 2 * var(--index) + var(--gutter));
+}
+.frame-media_right {
+	left: calc(var(--side-small) / 2 * var(--index) + var(--gutter));
+}
+.frame_bg {
+	background-color: rgb(0 0 0 / .87);
+}
+video.frame-media {
+	width: calc(var(--index) * var(--side-big));
+	height: calc(var(--index) * var(--side-small));
+}
+video.frame-media_right {
+	left: calc(var(--side-big) / 2 * var(--index) + var(--gutter));
+}
+video.frame-media_left {
+	right: calc(var(--side-big) / 2 * var(--index) + var(--gutter));
+}
+.text-right > * {
+	position: relative;
+	left: 18vw;
+}
+.text-left > * {
+	position: relative;
+	right: 18vw;
+}
+.frame h3 {
+	font-size: calc(var(--index) * 3);
+}
+.frame p {
+	max-width: 30vw;
+	margin-top: 3vh;
+}
+.soundbutton {
+	position: fixed;
+	bottom: 5vh;
+	right: 5vw;
+	cursor: pointer;
+	width: 24px;
+	transition: .25s ease;
+}
+.soundbutton.paused {
+	opacity: .25;
+}
